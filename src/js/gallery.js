@@ -1,11 +1,10 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
+import { renderImages } from './renderImages';
 
 const url = 'https://pixabay.com/api/';
 const api_key = '38007224-36f28fb0d2ff305028ad64684';
-
-const gallery = document.querySelector('.gallery');
 
 let currentPage = 1;
 let currentQuery = '';
@@ -35,39 +34,6 @@ function fetchGallery() {
 
 fetchGallery();
 
-function renderImages(images) {
-  const cardsMarkup = images
-    .map(image => createImageCardMarkup(image))
-    .join('');
-
-  gallery.insertAdjacentHTML('beforeend', cardsMarkup);
-  initializeLightbox();
-}
-
-function createImageCardMarkup(image) {
-  return `
-    <div class="photo-card">
-      <a class="photo-card-link" href="${image.largeImageURL}">
-        <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" /> 
-        <div class="info">
-          <p class="info-item">
-            <b>Likes:</b> ${image.likes}
-          </p>
-          <p class="info-item">
-            <b>Views:</b> ${image.views}
-          </p>
-          <p class="info-item">
-            <b>Comments:</b> ${image.comments}
-          </p>
-          <p class="info-item">
-            <b>Downloads:</b> ${image.downloads}
-          </p>
-        </div>
-      </a>
-    </div>
-  `;
-}
-
 function showNoResultsMessage() {
   Notiflix.Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
@@ -84,7 +50,7 @@ function showSearchResults(totalHits) {
   Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
 }
 
-function initializeLightbox() {
+export function initializeLightbox() {
   lightbox = new SimpleLightbox('.photo-card .photo-card-link', {
     captions: true,
     captionsData: 'alt',

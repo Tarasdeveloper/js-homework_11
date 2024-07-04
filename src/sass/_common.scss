@@ -1,7 +1,10 @@
 @import '~node_modules/modern-normalize/modern-normalize.css';
 :root {
-  --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  --animation-duration: 250ms;
+  --transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+button {
+  cursor: pointer;
 }
 
 .search-form {
@@ -9,11 +12,19 @@
   justify-content: center;
   padding: 15px 0;
   background-color: dodgerblue;
+  gap: 10px;
 
   & input {
     border-radius: 5px;
+    padding: 10px;
     border-color: transparent;
+    max-width: 300px;
+    width: 100%;
   }
+}
+
+.search-btn {
+  padding: 10px 20px;
 }
 
 .gallery {
@@ -40,7 +51,7 @@
   position: relative;
   box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.2),
     0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
-  transition: transform var(--animation-duration) var(--timing-function);
+  transition: transform var(--transition);
 }
 
 .photo-card:hover {
@@ -78,6 +89,7 @@
   cursor: pointer;
   margin-bottom: 30px;
   display: block;
+  padding: 10px 20px;
 }
 
 .is-hidden {
