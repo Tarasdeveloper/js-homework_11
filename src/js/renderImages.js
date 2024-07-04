@@ -1,5 +1,6 @@
 import { initializeLightbox } from './gallery';
-const gallery = document.querySelector('.gallery');
+
+export const gallery = document.querySelector('.gallery');
 
 export function renderImages(images) {
   const cardsMarkup = images

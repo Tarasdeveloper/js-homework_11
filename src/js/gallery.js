@@ -1,52 +1,91 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
-import { renderImages } from './renderImages';
+import { gallery, renderImages } from './renderImages';
+import axios from 'axios';
+import { onLoadMore } from './onLoadMore';
+
+const formRef = document.querySelector('.search-form');
+const btnLoadMore = document.querySelector('.load-more');
 
 const url = 'https://pixabay.com/api/';
 const api_key = '38007224-36f28fb0d2ff305028ad64684';
 
-let currentPage = 1;
-let currentQuery = '';
+btnLoadMore.addEventListener('click', onLoadMore);
+formRef.addEventListener('submit', onSearch);
 
-let query = 'sky';
-let page = 1;
+export let currentPage = 1;
+export let currentQuery = '';
+export let lightbox;
 
-function fetchGallery() {
-  fetch(
-    `${url}?key=${api_key}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`
-  )
-    .then(res => res.json())
-    .then(data => {
-      const { hits: images, totalHits } = data;
+async function onSearch(event) {
+  event.preventDefault();
+  clearGallery();
 
-      if (images.length > 0) {
-        renderImages(images);
-        showSearchResults(totalHits);
-      } else {
-        showNoResultsMessage();
-      }
+  const searchQuery = event.currentTarget.elements.searchQuery.value.trim();
+
+  if (searchQuery === '') {
+    return;
+  }
+
+  currentQuery = searchQuery;
+  currentPage = 1;
+
+  try {
+    const { images, totalHits } = await fetchGallery(searchQuery, currentPage);
+    if (images.length === 0) {
+      showNoResultsMessage();
+      return;
+    }
+
+    renderImages(images);
+    showLoadMoreButton();
+    showSearchResults(totalHits);
+    initializeLightbox();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function fetchGallery(query, page) {
+  return axios
+    .get(
+      `${url}?key=${api_key}&q=${query}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`
+    )
+    .then(response => {
+      const { hits, totalHits } = response.data;
+      return { images: hits, totalHits };
     })
     .catch(error => {
-      console.error('Error fetching images:', error);
+      throw new Error(`Failed to fetch images: ${error.message}`);
     });
 }
 
-fetchGallery();
+export function clearGallery() {
+  gallery.innerHTML = '';
+}
 
-function showNoResultsMessage() {
+export function showLoadMoreButton() {
+  btnLoadMore.classList.remove('is-hidden');
+}
+
+export function hideLoadMoreButton() {
+  btnLoadMore.classList.add('is-hidden');
+}
+
+export function showNoResultsMessage() {
   Notiflix.Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
   );
 }
 
-function showEndOfResultsMessage() {
+export function showEndOfResultsMessage() {
   Notiflix.Notify.info(
     "We're sorry, but you've reached the end of search results."
   );
 }
 
-function showSearchResults(totalHits) {
+export function showSearchResults(totalHits) {
   Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
 }
 
