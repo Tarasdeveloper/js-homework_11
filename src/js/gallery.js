@@ -2,8 +2,8 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 import { gallery, renderImages } from './renderImages';
-import axios from 'axios';
 import { onLoadMore } from './onLoadMore';
+import axios from 'axios';
 
 const formRef = document.querySelector('.search-form');
 const btnLoadMore = document.querySelector('.load-more');
@@ -17,6 +17,15 @@ formRef.addEventListener('submit', onSearch);
 export let currentPage = 1;
 export let currentQuery = '';
 export let lightbox;
+
+document.addEventListener('DOMContentLoaded', () => {
+  lightbox = new SimpleLightbox('.photo-card .photo-card-link', {
+    captions: true,
+    captionsData: 'alt',
+    captionPosition: 'bottom',
+    captionDelay: 250,
+  });
+});
 
 async function onSearch(event) {
   event.preventDefault();
@@ -38,10 +47,11 @@ async function onSearch(event) {
       return;
     }
 
-    renderImages(images);
     showLoadMoreButton();
+    formRef.reset();
+    renderImages(images);
     showSearchResults(totalHits);
-    initializeLightbox();
+    lightbox.refresh();
   } catch (error) {
     console.error(error);
   }
@@ -87,13 +97,4 @@ export function showEndOfResultsMessage() {
 
 export function showSearchResults(totalHits) {
   Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-}
-
-export function initializeLightbox() {
-  lightbox = new SimpleLightbox('.photo-card .photo-card-link', {
-    captions: true,
-    captionsData: 'alt',
-    captionPosition: 'bottom',
-    captionDelay: 250,
-  });
 }

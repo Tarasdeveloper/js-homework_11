@@ -3,10 +3,10 @@ import {
   currentQuery,
   fetchGallery,
   hideLoadMoreButton,
-  initializeLightbox,
-  lightbox,
   showEndOfResultsMessage,
+  lightbox,
 } from './gallery';
+
 import { renderImages } from './renderImages';
 
 export async function onLoadMore() {
@@ -20,7 +20,9 @@ export async function onLoadMore() {
     }
 
     renderImages(images);
-    initializeLightbox();
+    if (lightbox) {
+      lightbox.refresh(); // Обновляем lightbox после добавления новых изображений
+    }
 
     const { images: nextImages } = await fetchGallery(
       currentQuery,
@@ -30,8 +32,6 @@ export async function onLoadMore() {
     if (nextImages.length === 0) {
       hideLoadMoreButton();
     }
-
-    lightbox.refresh();
   } catch (error) {
     console.error(error);
   }

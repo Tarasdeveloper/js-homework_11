@@ -1,4 +1,4 @@
-import { initializeLightbox } from './gallery';
+import { lightbox } from './gallery';
 
 export const gallery = document.querySelector('.gallery');
 
@@ -8,7 +8,10 @@ export function renderImages(images) {
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', cardsMarkup);
-  initializeLightbox();
+  if (lightbox) {
+    lightbox.refresh();
+  }
+  formRef.clear();
 }
 
 export function createImageCardMarkup(image) {
