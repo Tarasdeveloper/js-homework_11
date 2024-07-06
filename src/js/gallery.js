@@ -5,7 +5,7 @@ import { gallery, renderImages } from './renderImages';
 import { onLoadMore } from './onLoadMore';
 import axios from 'axios';
 
-const formRef = document.querySelector('.search-form');
+export const formRef = document.querySelector('.search-form');
 const btnLoadMore = document.querySelector('.load-more');
 
 const url = 'https://pixabay.com/api/';

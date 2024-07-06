@@ -11,7 +11,6 @@ export function renderImages(images) {
   if (lightbox) {
     lightbox.refresh();
   }
-  formRef.clear();
 }
 
 export function createImageCardMarkup(image) {
