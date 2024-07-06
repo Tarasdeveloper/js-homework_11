@@ -13,6 +13,11 @@ button {
   padding: 15px 0;
   background-color: dodgerblue;
   gap: 10px;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 1;
 
   & input {
     border-radius: 5px;
@@ -25,19 +30,20 @@ button {
 
 .search-btn {
   padding: 10px 20px;
+  border-radius: 5px;
+  border-color: transparent;
+  color: dodgerblue;
+  font-weight: 700;
 }
 
 .gallery {
+  // max-width: 1140px;
   display: grid;
-  max-width: 1140px;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
   padding: 0;
-  margin: 0;
+  margin: 70px auto 30px;
   max-width: calc(100vw - 80px);
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
   padding: 20px 15px;
   justify-content: center;
 }

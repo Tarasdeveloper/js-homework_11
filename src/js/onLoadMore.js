@@ -21,7 +21,7 @@ export async function onLoadMore() {
 
     renderImages(images);
     if (lightbox) {
-      lightbox.refresh(); // Обновляем lightbox после добавления новых изображений
+      lightbox.refresh();
     }
 
     const { images: nextImages } = await fetchGallery(
