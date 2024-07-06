@@ -98,3 +98,7 @@ export function showEndOfResultsMessage() {
 export function showSearchResults(totalHits) {
   Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
 }
+
+export function incrementCurrentPage() {
+  currentPage += 1;
+}

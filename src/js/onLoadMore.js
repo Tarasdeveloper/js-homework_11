@@ -5,12 +5,12 @@ import {
   hideLoadMoreButton,
   showEndOfResultsMessage,
   lightbox,
+  incrementCurrentPage,
 } from './gallery';
-
 import { renderImages } from './renderImages';
 
 export async function onLoadMore() {
-  currentPage += 1;
+  incrementCurrentPage();
   try {
     const { images } = await fetchGallery(currentQuery, currentPage);
     if (images.length === 0) {
@@ -20,15 +20,12 @@ export async function onLoadMore() {
     }
 
     renderImages(images);
-    if (lightbox) {
-      lightbox.refresh();
-    }
+    lightbox.refresh();
 
     const { images: nextImages } = await fetchGallery(
-      currentQuery,
-      currentPage + 1
+      currentPage + 1,
+      currentQuery
     );
-
     if (nextImages.length === 0) {
       hideLoadMoreButton();
     }
